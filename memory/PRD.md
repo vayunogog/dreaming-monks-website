@@ -1,0 +1,25 @@
+# PRD — Dreaming Monks Landing Page
+
+## Original Problem Statement
+Single-page marketing website for "Dreaming Monks" (dreamingmonks.com), a Digital Out-of-Home (DOOH) advertising company in Delhi-NCR, India. B2B audience: brands/advertisers buying ad space. Tagline: "Advertising That Comes Home". Brand: bold red (#E31E24), black, white; angular shapes; bold condensed typography; premium media-industry tone. Logo provided by user (red/black/white DM mark).
+
+## Architecture
+- Frontend: React 19 + Tailwind + framer-motion + Lenis (smooth scroll) + react-fast-marquee + react-countup. Single scrolling page, anchor nav via Lenis scrollTo.
+- Backend: FastAPI + Motor (MongoDB). POST /api/leads (validated with pydantic + EmailStr), GET /api/leads, GET /api/ health.
+- Assets: /public/logo.png (user logo), /public/media-kit.pdf (generated branded media kit via fpdf2, script at /app/scripts/generate_media_kit.py).
+- Design system: /app/design_guidelines.json (Brutalist media/agency). Fonts: Bebas Neue (display), Manrope (body).
+
+## User Personas
+- Brand marketing manager / media planner evaluating DOOH inventory in Delhi-NCR.
+- Agency buyer requesting rates and a media kit.
+
+## Core Requirements (static)
+Sticky nav with logo+tagline and Get a Quote CTA; kinetic hero; animated stats bar (30+ societies, 720 screens, Delhi-NCR, 55,000+ daily impressions); What We Offer (3 inventory cards); Why Us (4 value props); How It Works (3 steps); trust/logo placeholder row; lead capture form; footer with contacts. Responsive, smooth anchors, scroll animations.
+
+## Implemented
+- 2026-08-15: Full landing page — nav (desktop + mobile menu), hero (masked line reveal, red intro wipe, mouse parallax angular shapes, scroll parallax), stats bar with scroll-triggered counters, editorial marquee, Offer / Why Us (white section) / How It Works / Trust sections as numbered chapters, contact form saving leads to MongoDB with success state + toast, footer with socials and contact details, branded media-kit.pdf download, data-testids throughout. Verified: leads API (POST + GET), form submission e2e, media kit HTTP 200, desktop + mobile (390px) screenshots.
+
+## Backlog / Next Tasks
+- P0: None blocking.
+- P1: Email notification on new lead (Resend); admin view for leads (auth); real brand logos for trust wall; real social profile URLs.
+- P2: Inventory/locations page with society-level map; case studies; multi-language (Hindi); SEO schema + OG image; blog/press section.

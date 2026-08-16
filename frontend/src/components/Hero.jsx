@@ -5,7 +5,7 @@ import { ArrowRight, ArrowDown, FileDown } from "lucide-react";
 const EASE = [0.16, 1, 0.3, 1];
 
 // Hero background slideshow — add more photo paths here to extend the rotation
-const HERO_PHOTOS = ["/photos/hero-1.jpg", "/photos/hero-2.jpg"];
+const HERO_PHOTOS = ["/photos/hero-5.jpg", "/photos/hero-3.jpg", "/photos/hero-4.jpg", "/photos/hero-2.jpg", "/photos/hero-1.jpg"];
 
 const MaskLine = ({ children, delay }) => (
   <span className="block overflow-hidden pb-[0.09em] -mb-[0.09em]">

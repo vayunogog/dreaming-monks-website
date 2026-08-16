@@ -1,8 +1,14 @@
 import { motion } from "framer-motion";
 import { Monitor, LayoutDashboard, Signpost } from "lucide-react";
 import Chapter from "./Chapter";
+import VideoPlaylist from "./VideoPlaylist";
 
 const EASE = [0.16, 1, 0.3, 1];
+
+const OFFER_VIDEOS = [
+  { webm: "/videos/sites-1.webm", mp4: "/videos/sites-1.mp4" },
+  { webm: "/videos/sites-2.webm", mp4: "/videos/sites-2.mp4" },
+];
 
 const CARDS = [
   {
@@ -46,10 +52,16 @@ export default function Offer() {
               whileHover={{ y: -6 }}
               className="group clip-corner bg-[#F7F7F7] border border-black/10 hover:border-brand-red p-8 md:p-10 transition-colors duration-300"
             >
-              <div className="aspect-[16/9] bg-white border-2 border-dashed border-brand-red/40 group-hover:border-brand-red flex flex-col items-center justify-center gap-2 transition-colors duration-300">
-                <card.icon className="w-7 h-7 text-brand-red" strokeWidth={1.5} />
-                <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-brand-red/60">Site photo — upload pending</span>
-              </div>
+              {i === 0 ? (
+                <div data-testid="offer-video-frame" className="aspect-[16/9] border border-black/10 overflow-hidden">
+                  <VideoPlaylist sources={OFFER_VIDEOS} testIdPrefix="offer-video" />
+                </div>
+              ) : (
+                <div className="aspect-[16/9] bg-white border-2 border-dashed border-brand-red/40 group-hover:border-brand-red flex flex-col items-center justify-center gap-2 transition-colors duration-300">
+                  <card.icon className="w-7 h-7 text-brand-red" strokeWidth={1.5} />
+                  <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-brand-red/60">Site photo — upload pending</span>
+                </div>
+              )}
               <h3 className="mt-8 font-display uppercase tracking-wide text-3xl md:text-4xl text-black">
                 {card.title}
               </h3>

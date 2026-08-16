@@ -4,6 +4,9 @@ import { ArrowRight, ArrowDown, FileDown } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1];
 
+// Hero background slideshow — add more photo paths here to extend the rotation
+const HERO_PHOTOS = ["/videos/poster-2.webp", "/videos/poster-1.webp"];
+
 const MaskLine = ({ children, delay }) => (
   <span className="block overflow-hidden pb-[0.09em] -mb-[0.09em]">
     <motion.span
@@ -22,41 +25,13 @@ export default function Hero({ scrollTo }) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
 
-  const VIDEOS = [
-    { webm: "/videos/hero-2.webm", mp4: "/videos/hero-2.mp4", poster: "/videos/poster-2.webp" },
-    { webm: "/videos/hero-1.webm", mp4: "/videos/hero-1.mp4", poster: "/videos/poster-1.webp" },
-  ];
-  const vidRefs = [useRef(null), useRef(null)];
-  const [activeVid, setActiveVid] = useState(0);
-  const switching = useRef(false);
-
-  const switchVideo = (from) => {
-    if (switching.current) return;
-    switching.current = true;
-    const next = (from + 1) % VIDEOS.length;
-    const nextEl = vidRefs[next].current;
-    if (nextEl) {
-      nextEl.currentTime = 0;
-      nextEl.play().catch(() => {});
-    }
-    setActiveVid(next);
-    setTimeout(() => {
-      switching.current = false;
-    }, 1500);
-  };
-
-  const handleTimeUpdate = (i) => {
-    const v = vidRefs[i].current;
-    if (!v || i !== activeVid || switching.current) return;
-    if (v.duration && v.duration - v.currentTime < 1.1) switchVideo(i);
-  };
+  const [activePhoto, setActivePhoto] = useState(0);
 
   useEffect(() => {
-    const v = vidRefs[0].current;
-    if (v) {
-      v.play().catch(() => {});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const id = setInterval(() => {
+      setActivePhoto((p) => (p + 1) % HERO_PHOTOS.length);
+    }, 5000);
+    return () => clearInterval(id);
   }, []);
   const sx = useSpring(mx, { stiffness: 50, damping: 18 });
   const sy = useSpring(my, { stiffness: 50, damping: 18 });
@@ -83,24 +58,13 @@ export default function Hero({ scrollTo }) {
       className="relative min-h-screen flex items-center overflow-hidden bg-black"
     >
       <div className="absolute inset-0" aria-hidden="true">
-        {VIDEOS.map((video, i) => (
-          <video
-            key={video.mp4}
-            ref={vidRefs[i]}
-            data-testid={`hero-video-${i + 1}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${activeVid === i ? "opacity-100" : "opacity-0"}`}
-            poster={video.poster}
-            muted
-            playsInline
-            autoPlay={i === 0}
-            preload="auto"
-            disablePictureInPicture
-            onTimeUpdate={() => handleTimeUpdate(i)}
-            onEnded={() => switchVideo(i)}
-          >
-            <source src={video.webm} type="video/webm" />
-            <source src={video.mp4} type="video/mp4" />
-          </video>
+        {HERO_PHOTOS.map((photo, i) => (
+          <div
+            key={photo}
+            data-testid={`hero-slide-${i + 1}`}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${activePhoto === i ? "opacity-100" : "opacity-0"}`}
+            style={{ backgroundImage: `url(${photo})` }}
+          />
         ))}
         <div className="absolute inset-0 bg-black/55" />
       </div>

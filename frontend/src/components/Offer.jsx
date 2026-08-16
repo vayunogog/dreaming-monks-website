@@ -49,6 +49,7 @@ const CARDS = [
     desc: "Large-format outdoor displays that dominate skylines and high-traffic corridors — maximum scale, maximum impact.",
     spec: "Maximum Scale / High Impact",
     testId: "offer-card-big-outdoor",
+    photo: "/photos/big-outdoor.jpg",
   },
 ];
 

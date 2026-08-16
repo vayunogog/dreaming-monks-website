@@ -6,7 +6,6 @@ const LINKS = [
   { label: "Services", target: "#services" },
   { label: "Why Us", target: "#why-us" },
   { label: "How It Works", target: "#how-it-works" },
-  { label: "Our Sites", target: "#sites" },
   { label: "Contact", target: "#contact" },
 ];
 

@@ -57,7 +57,7 @@ export default function Contact({ user, onSignOut }) {
     <section id="contact" data-testid="contact-section" className="py-24 md:py-32 border-t border-black/10">
       <div className="max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-2 gap-14 lg:gap-20">
         <div>
-          <Chapter number="05" label="Get a Quote" title="Let's Put Your Brand Where India Lives." />
+          <Chapter number="04" label="Get a Quote" title="Let's Put Your Brand Where India Lives." />
           <div className="space-y-6">
             <a
               data-testid="contact-email-link"

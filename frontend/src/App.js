@@ -78,11 +78,11 @@ function App() {
         <Hero scrollTo={scrollTo} />
         <StatsBar />
         <EditorialMarquee />
-        <Offer />
+        <Offer scrollTo={scrollTo} />
         <WhyUs />
         <HowItWorks />
         <Trust />
-        <OurSites />
+        <OurSites scrollTo={scrollTo} />
         <Contact user={user} onSignOut={signOut} />
       </main>
       <Footer scrollTo={scrollTo} />

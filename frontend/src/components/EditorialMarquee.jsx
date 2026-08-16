@@ -12,7 +12,7 @@ const ITEMS = [
 
 export default function EditorialMarquee() {
   return (
-    <section data-testid="editorial-marquee" aria-hidden="true" className="py-10 md:py-14 border-b border-white/10 overflow-hidden">
+    <section data-testid="editorial-marquee" aria-hidden="true" className="py-10 md:py-14 border-b border-black/10 overflow-hidden">
       <Marquee speed={35} gradient={false}>
         {ITEMS.map((item, i) => (
           <span key={i} className="flex items-center">

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-    background: #050505;
+    background: #FFFFFF;
 }
 
 html.lenis, html.lenis body {
@@ -17,8 +17,8 @@ html.lenis, html.lenis body {
 body {
     margin: 0;
     font-family: 'Manrope', system-ui, sans-serif;
-    background: #050505;
-    color: #ffffff;
+    background: #FFFFFF;
+    color: #050505;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -32,15 +32,15 @@ body {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: #050505;
+    background: #FFFFFF;
 }
 ::-webkit-scrollbar-thumb {
     background: #E31E24;
-    border: 2px solid #050505;
+    border: 2px solid #FFFFFF;
 }
 
 .text-stroke {
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.28);
+    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.22);
     color: transparent;
 }
 
@@ -64,7 +64,7 @@ body {
 
 @layer base {
     :root {
-        --background: 0 0% 2%;
+        --background: 0 0% 100%;
         --foreground: 0 0% 98%;
         --card: 0 0% 7%;
         --card-foreground: 0 0% 98%;

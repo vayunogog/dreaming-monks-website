@@ -44,16 +44,17 @@ export default function Offer() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, ease: EASE, delay: i * 0.12 }}
               whileHover={{ y: -6 }}
-              className="group clip-corner bg-brand-surface border border-white/10 hover:border-brand-red p-8 md:p-10 transition-colors duration-300"
+              className="group clip-corner bg-[#F7F7F7] border border-black/10 hover:border-brand-red p-8 md:p-10 transition-colors duration-300"
             >
-              <div className="w-16 h-16 border-2 border-brand-red/50 group-hover:border-brand-red flex items-center justify-center transition-colors duration-300">
-                <card.icon className="w-8 h-8 text-brand-red" strokeWidth={1.5} />
+              <div className="aspect-[16/9] bg-white border-2 border-dashed border-brand-red/40 group-hover:border-brand-red flex flex-col items-center justify-center gap-2 transition-colors duration-300">
+                <card.icon className="w-7 h-7 text-brand-red" strokeWidth={1.5} />
+                <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-brand-red/60">Site photo — upload pending</span>
               </div>
-              <h3 className="mt-8 font-display uppercase tracking-wide text-3xl md:text-4xl text-white">
+              <h3 className="mt-8 font-display uppercase tracking-wide text-3xl md:text-4xl text-black">
                 {card.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-white/55">{card.desc}</p>
-              <div className="mt-8 pt-4 border-t border-white/10 text-[10px] font-bold tracking-[0.3em] uppercase text-brand-red">
+              <p className="mt-4 text-sm leading-relaxed text-black/55">{card.desc}</p>
+              <div className="mt-8 pt-4 border-t border-black/10 text-[10px] font-bold tracking-[0.3em] uppercase text-brand-red">
                 {card.spec}
               </div>
             </motion.div>

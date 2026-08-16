@@ -1,4 +1,5 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request, Response, HTTPException
+import httpx
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -8,7 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -27,6 +28,7 @@ class LeadCreate(BaseModel):
     email: EmailStr
     phone: str = Field(min_length=8, max_length=20)
     message: str = Field(default="", max_length=2000)
+    user_id: str = Field(default="", max_length=40)
 
 
 class Lead(LeadCreate):
@@ -56,6 +58,85 @@ async def list_leads():
         if isinstance(lead.get('created_at'), str):
             lead['created_at'] = datetime.fromisoformat(lead['created_at'])
     return leads
+
+
+GOOGLE_SESSION_DATA_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+
+
+@api_router.post("/auth/session")
+async def create_auth_session(request: Request, response: Response):
+    body = await request.json()
+    session_id = body.get("session_id")
+    if not session_id:
+        raise HTTPException(status_code=400, detail="session_id required")
+    async with httpx.AsyncClient(timeout=15) as http:
+        resp = await http.get(GOOGLE_SESSION_DATA_URL, headers={"X-Session-ID": session_id})
+    if resp.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid session_id")
+    data = resp.json()
+
+    user_doc = await db.users.find_one({"email": data["email"]}, {"_id": 0})
+    if user_doc:
+        user_id = user_doc["user_id"]
+        await db.users.update_one({"user_id": user_id}, {"$set": {"name": data["name"], "picture": data.get("picture", "")}})
+    else:
+        user_id = f"user_{uuid.uuid4().hex[:12]}"
+        await db.users.insert_one({
+            "user_id": user_id,
+            "email": data["email"],
+            "name": data["name"],
+            "picture": data.get("picture", ""),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+    session_token = data["session_token"]
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    await db.user_sessions.insert_one({
+        "user_id": user_id,
+        "session_token": session_token,
+        "expires_at": expires_at.isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    response.set_cookie("session_token", session_token, httponly=True, secure=True, samesite="none", path="/", max_age=7 * 24 * 3600)
+    return {"user_id": user_id, "email": data["email"], "name": data["name"], "picture": data.get("picture", "")}
+
+
+async def get_current_user(request: Request):
+    token = request.cookies.get("session_token")
+    if not token:
+        auth = request.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            token = auth[7:]
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    session_doc = await db.user_sessions.find_one({"session_token": token}, {"_id": 0})
+    if not session_doc:
+        raise HTTPException(status_code=401, detail="Invalid session")
+    expires_at = session_doc["expires_at"]
+    if isinstance(expires_at, str):
+        expires_at = datetime.fromisoformat(expires_at)
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if expires_at < datetime.now(timezone.utc):
+        raise HTTPException(status_code=401, detail="Session expired")
+    user_doc = await db.users.find_one({"user_id": session_doc["user_id"]}, {"_id": 0})
+    if not user_doc:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user_doc
+
+
+@api_router.get("/auth/me")
+async def auth_me(request: Request):
+    return await get_current_user(request)
+
+
+@api_router.post("/auth/logout")
+async def auth_logout(request: Request, response: Response):
+    token = request.cookies.get("session_token")
+    if token:
+        await db.user_sessions.delete_many({"session_token": token})
+    response.delete_cookie("session_token", path="/")
+    return {"ok": True}
 
 
 app.include_router(api_router)

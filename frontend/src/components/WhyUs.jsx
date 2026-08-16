@@ -29,7 +29,7 @@ const PROPS = [
 
 export default function WhyUs() {
   return (
-    <section id="why-us" data-testid="why-us-section" className="bg-white text-black py-24 md:py-32">
+    <section id="why-us" data-testid="why-us-section" className="bg-[#F4F4F4] text-black py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-5 md:px-8">
         <Chapter number="02" label="Why Dreaming Monks" title="Seen Where Life Actually Happens" dark={false} />
         <div>

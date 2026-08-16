@@ -6,6 +6,7 @@ const LINKS = [
   { label: "Services", target: "#services" },
   { label: "Why Us", target: "#why-us" },
   { label: "How It Works", target: "#how-it-works" },
+  { label: "Our Sites", target: "#sites" },
   { label: "Contact", target: "#contact" },
 ];
 
@@ -19,14 +20,12 @@ export default function Navbar({ scrollTo }) {
   };
 
   return (
-    <header data-testid="main-nav" className="fixed top-0 inset-x-0 z-50 bg-brand-black/90 backdrop-blur-md border-b border-white/10">
+    <header data-testid="main-nav" className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-black/10">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-16 md:h-20 flex items-center justify-between gap-6">
-        <button data-testid="nav-logo-btn" onClick={() => go("#top")} className="flex items-center gap-3 shrink-0">
-          <span className="bg-white px-2 py-1 clip-corner" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}>
-            <img src="/logo.png" alt="Dreaming Monks" className="h-8 md:h-9 w-auto" />
-          </span>
+        <button data-testid="nav-logo-btn" onClick={() => go("#top")} className="flex items-center gap-3 shrink-0 py-2">
+          <img src="/logo-transparent.png" alt="Dreaming Monks" className="h-10 md:h-12 w-auto" />
           <span className="hidden lg:block leading-tight text-left">
-            <span className="block font-display text-lg tracking-wider text-white">DREAMING MONKS</span>
+            <span className="block font-display text-lg tracking-wider text-black">DREAMING MONKS</span>
             <span className="block text-[10px] font-bold tracking-[0.22em] text-brand-red uppercase">Advertising That Comes Home</span>
           </span>
         </button>
@@ -37,7 +36,7 @@ export default function Navbar({ scrollTo }) {
               key={l.target}
               data-testid={`nav-link-${testId(l.label)}`}
               onClick={() => go(l.target)}
-              className="text-xs font-bold tracking-[0.2em] uppercase text-white/70 hover:text-brand-red transition-colors duration-200"
+              className="text-xs font-bold tracking-[0.2em] uppercase text-black/70 hover:text-brand-red transition-colors duration-200"
             >
               {l.label}
             </button>
@@ -57,7 +56,7 @@ export default function Navbar({ scrollTo }) {
             data-testid="nav-mobile-menu-btn"
             aria-label="Toggle menu"
             onClick={() => setOpen(!open)}
-            className="md:hidden text-white p-1"
+            className="md:hidden text-black p-1"
           >
             {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -72,7 +71,7 @@ export default function Navbar({ scrollTo }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden overflow-hidden border-t border-white/10 bg-brand-black"
+            className="md:hidden overflow-hidden border-t border-black/10 bg-white"
           >
             <div className="px-5 py-6 flex flex-col gap-5">
               {LINKS.map((l) => (
@@ -80,7 +79,7 @@ export default function Navbar({ scrollTo }) {
                   key={l.target}
                   data-testid={`nav-mobile-link-${testId(l.label)}`}
                   onClick={() => go(l.target)}
-                  className="text-left font-display text-3xl uppercase tracking-wide text-white hover:text-brand-red transition-colors duration-200"
+                  className="text-left font-display text-3xl uppercase tracking-wide text-black hover:text-brand-red transition-colors duration-200"
                 >
                   {l.label}
                 </button>

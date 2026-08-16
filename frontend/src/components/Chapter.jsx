@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function Chapter({ number, label, title, dark = true }) {
+export default function Chapter({ number, label, title, dark = false }) {
   return (
     <div className="mb-14 md:mb-20">
       <motion.div

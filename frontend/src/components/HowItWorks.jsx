@@ -24,7 +24,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" data-testid="how-it-works-section" className="py-24 md:py-32 border-t border-white/10">
+    <section id="how-it-works" data-testid="how-it-works-section" className="py-24 md:py-32 border-t border-black/10">
       <div className="max-w-7xl mx-auto px-5 md:px-8">
         <Chapter number="03" label="How It Works" title="Brief To Broadcast In Three Moves" />
         <div className="relative grid md:grid-cols-3 gap-10 md:gap-8">
@@ -42,11 +42,11 @@ export default function HowItWorks() {
               <div className="relative z-10 w-16 h-16 bg-brand-red clip-corner flex items-center justify-center font-display text-3xl text-white">
                 {step.num}
               </div>
-              <h3 className="mt-7 font-display uppercase tracking-wide text-3xl md:text-4xl text-white flex items-center gap-3">
+              <h3 className="mt-7 font-display uppercase tracking-wide text-3xl md:text-4xl text-black flex items-center gap-3">
                 {step.title}
                 {i < STEPS.length - 1 && <ArrowRight className="hidden md:block w-6 h-6 text-brand-red shrink-0" strokeWidth={2.5} />}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-white/55 max-w-sm">{step.desc}</p>
+              <p className="mt-4 text-sm leading-relaxed text-black/55 max-w-sm">{step.desc}</p>
             </motion.div>
           ))}
         </div>

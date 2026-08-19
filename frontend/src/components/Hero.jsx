@@ -152,7 +152,7 @@ export default function Hero({ scrollTo }) {
           </button>
           <button
             data-testid="hero-inventory-btn"
-            onClick={() => scrollTo("#services")}
+            onClick={() => scrollTo("#sites")}
             className="group inline-flex items-center gap-3 border-2 border-white text-white hover:bg-white hover:text-black font-bold text-sm tracking-[0.15em] uppercase px-8 py-[0.85rem] transition-colors duration-200"
           >
             View Inventory

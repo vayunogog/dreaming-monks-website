@@ -1,27 +1,63 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, Play } from "lucide-react";
 import Chapter from "./Chapter";
 
 const EASE = [0.16, 1, 0.3, 1];
 
+// Each site has a `media` array. Add more items any time — no other code
+// changes needed. Two item shapes:
+//   { type: "photo", src: "/photos/your-file.jpg" }
+//   { type: "video", webm: "/videos/your-file.webm", mp4: "/videos/your-file.mp4" }
+// (webm is optional — mp4 alone works fine, webm just loads a bit faster where supported)
 const SITES = [
   {
     name: "Prateek Edifice",
     location: "Sector 107, Noida",
     testId: "site-prateek-edifice",
-    photos: ["/photos/prateek-edifice.jpg"],
+    media: [{ type: "photo", src: "/photos/prateekedifice.jpg" }],
   },
   {
     name: "Gaur Saundaryam",
     location: "Greater Noida",
     testId: "site-gaur-saundaryam",
-    photos: ["/photos/gaur-saundaryam.jpg"],
+    media: [{ type: "photo", src: "/photos/gaursaundaryam.jpg" }],
   },
 ];
 
+function MediaDisplay({ item, alt }) {
+  if (item.type === "video") {
+    return (
+      <video
+        className="w-full h-full object-cover"
+        muted
+        loop
+        autoPlay
+        playsInline
+        disablePictureInPicture
+      >
+        {item.webm && <source src={item.webm} type="video/webm" />}
+        <source src={item.mp4} type="video/mp4" />
+      </video>
+    );
+  }
+  return <img src={item.src} alt={alt} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />;
+}
+
+function Thumb({ item }) {
+  if (item.type === "video") {
+    return (
+      <div className="w-full h-full bg-black flex items-center justify-center">
+        <Play className="w-4 h-4 text-white" strokeWidth={2} fill="currentColor" />
+      </div>
+    );
+  }
+  return <img src={item.src} alt="" className="w-full h-full object-cover" />;
+}
+
 function SiteCard({ site, index, onQuote }) {
   const [active, setActive] = useState(0);
+  const current = site.media[active];
 
   return (
     <motion.div
@@ -39,11 +75,7 @@ function SiteCard({ site, index, onQuote }) {
         aria-label="Get a quote"
         className="group/img relative block w-full aspect-[4/3] overflow-hidden cursor-pointer"
       >
-        <img
-          src={site.photos[active]}
-          alt={site.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-        />
+        <MediaDisplay item={current} alt={site.name} />
         <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover/img:bg-black/40 transition-colors duration-300 flex items-center justify-center">
           <span className="opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 text-white text-[10px] font-bold tracking-[0.25em] uppercase border-2 border-white px-4 py-2">
             Get a Quote
@@ -51,19 +83,19 @@ function SiteCard({ site, index, onQuote }) {
         </span>
       </button>
 
-      {site.photos.length > 1 && (
-        <div className="flex gap-2 p-3 pb-0">
-          {site.photos.map((photo, i) => (
+      {site.media.length > 1 && (
+        <div className="flex gap-2 p-3 pb-0 flex-wrap">
+          {site.media.map((item, i) => (
             <button
-              key={photo}
+              key={item.src || item.mp4}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`Show photo ${i + 1} of ${site.name}`}
+              aria-label={`Show ${item.type} ${i + 1} of ${site.name}`}
               className={`w-14 h-14 overflow-hidden border-2 transition-colors duration-200 ${
                 active === i ? "border-brand-red" : "border-transparent opacity-70 hover:opacity-100"
               }`}
             >
-              <img src={photo} alt="" className="w-full h-full object-cover" />
+              <Thumb item={item} />
             </button>
           ))}
         </div>

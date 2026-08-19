@@ -11,6 +11,7 @@ import Offer from "@/components/Offer";
 import WhyUs from "@/components/WhyUs";
 import HowItWorks from "@/components/HowItWorks";
 import Trust from "@/components/Trust";
+import Sites from "@/components/Sites";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -81,6 +82,7 @@ function App() {
         <WhyUs />
         <HowItWorks />
         <Trust />
+        <Sites scrollTo={scrollTo} />
         <Contact user={user} onSignOut={signOut} />
       </main>
       <Footer scrollTo={scrollTo} />

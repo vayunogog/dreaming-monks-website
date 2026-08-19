@@ -18,15 +18,15 @@ const QuoteCue = () => (
   </span>
 );
 
+const VISION = {
+  icon: Monitor,
+  title: "Our Vision",
+  desc: "Large-format, high-brightness LED screens at society perimeters and high-traffic junctions — impossible to miss, day or night.",
+  spec: "High-Brightness / 24×7",
+  testId: "offer-card-outdoor-led",
+};
+
 const CARDS = [
-  {
-    icon: Monitor,
-    title: "Our Vision",
-    desc: "Large-format, high-brightness LED screens at society perimeters and high-traffic junctions — impossible to miss, day or night.",
-    spec: "High-Brightness / 24×7",
-    testId: "offer-card-outdoor-led",
-    video: true,
-  },
   {
     icon: LayoutDashboard,
     title: "Indoor Lobby Displays",
@@ -60,7 +60,36 @@ export default function Offer({ scrollTo }) {
     <section id="services" data-testid="services-section" className="py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-5 md:px-8">
         <Chapter number="01" label="What We Offer" title="Spaces That Command Attention" />
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        {/* Featured Vision panel — large, full-bleed video, not boxed in with the product cards */}
+        <motion.div
+          data-testid={VISION.testId}
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="group/img relative w-full h-[56vh] min-h-[380px] max-h-[680px] overflow-hidden mb-6 md:mb-8 cursor-pointer"
+        >
+          <VideoPlaylist sources={OFFER_VIDEOS} testIdPrefix="offer-video" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/0" />
+          <button
+            data-testid={`offer-image-link-${VISION.testId}`}
+            onClick={onQuote}
+            aria-label="Get a quote"
+            className="absolute inset-0 w-full h-full flex flex-col justify-end items-start text-left p-8 md:p-14"
+          >
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-brand-red mb-3">{VISION.spec}</span>
+            <h3 className="font-display uppercase tracking-wide text-4xl sm:text-5xl md:text-7xl text-white leading-[0.95]">
+              {VISION.title}
+            </h3>
+            <p className="mt-4 max-w-xl text-sm md:text-base leading-relaxed text-white/80">{VISION.desc}</p>
+            <span className="mt-6 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 text-white text-[10px] font-bold tracking-[0.25em] uppercase border-2 border-white px-4 py-2">
+              Get a Quote
+            </span>
+          </button>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {CARDS.map((card, i) => (
             <motion.div
               key={card.testId}
@@ -73,17 +102,7 @@ export default function Offer({ scrollTo }) {
               whileHover={{ y: -6 }}
               className="group clip-corner bg-[#F7F7F7] border border-black/10 hover:border-brand-red p-8 md:p-10 transition-colors duration-300"
             >
-              {card.video ? (
-                <button
-                  data-testid={`offer-image-link-${card.testId}`}
-                  onClick={onQuote}
-                  aria-label="Get a quote"
-                  className="group/img relative block w-full aspect-[16/9] border border-black/10 overflow-hidden cursor-pointer"
-                >
-                  <VideoPlaylist sources={OFFER_VIDEOS} testIdPrefix="offer-video" />
-                  <QuoteCue />
-                </button>
-              ) : card.photo ? (
+              {card.photo ? (
                 <button
                   data-testid={`offer-image-link-${card.testId}`}
                   onClick={onQuote}
